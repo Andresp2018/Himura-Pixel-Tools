@@ -1,0 +1,23 @@
+# Himura Pixel Tools
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+
+# local model store (large, gitignored per spec recommendation)
+models/
+himura_data/
+
+# generated outputs / cache
+cache/
+logs/
+*.db
+himura.db
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

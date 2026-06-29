@@ -1,0 +1,61 @@
+# Plan
+
+## Future development ideas
+
+- Add a stable-diffusion.cpp runner so Ideogram 4 GGUF and other GGUF image models can generate directly inside the app.
+- Build a bundled Windows installer that starts the backend, opens the Tauri shell, and keeps model storage under a clear user data folder.
+- Add model health cards with exact backend support: SDXL, SD 1.5, FLUX.1, FLUX.2 or Klein, Ideogram GGUF, LoRA, ControlNet, IP-Adapter, and VAE.
+- Add a visual preset gallery for characters, objects, UI packs, recipes, tiles, and animation types.
+- Improve character consistency with pose controlled passes, reference image scoring, face and palette anchors, and automatic rejection of direction drift.
+- Add a sprite rig export path for engines that prefer deterministic skeletal or layered animation.
+- Add batch compare mode for seeds, LoRA weights, palettes, and prompt variants.
+- Add project templates for RPG, tactics, platformer, inventory UI, and tile based maps.
+- Add importers and exporters for Aseprite, Godot, Unity, Tiled, TexturePacker, and raw PNG sheets.
+- Add resume safe model downloads with clearer retry and disk space checks.
+- Add a first run wizard for GPU backend, model choice, output folder, and example project generation.
+
+## Optimizations
+
+- Cache loaded tokenizers, VAEs, and text encoders more aggressively between compatible jobs.
+- Add explicit low VRAM modes for 4 GB, 6 GB, 8 GB, and 12 GB devices.
+- Detect DirectML memory pressure and fall back to smaller canvas sizes before failing.
+- Add async job cancellation that also releases model memory cleanly.
+- Precompute palette locks and masks once per character profile.
+- Reuse mirrored frames and directions before invoking the model when symmetry is acceptable.
+- Add image hash deduplication for previews, intermediate files, and recipe outputs.
+- Compress metadata manifests and add project level asset indexes for fast reload.
+- Add a background queue that can pause when the UI is idle or the machine is on battery.
+- Split heavyweight optional dependencies into setup profiles.
+
+## Guide to GitHub success
+
+- Keep the README short, visual, and honest about Version 1 status.
+- Add screenshots and example output grids from the included example prompts.
+- Publish a small roadmap with clear labels: working, experimental, planned.
+- Add a one command setup path for Windows first, then expand to Linux.
+- Add issue templates for model download bugs, generation bugs, UI bugs, and feature requests.
+- Add a compatibility table for GPUs, Python versions, and model types.
+- Add a small test model or mock mode so contributors can run tests without large downloads.
+- Tag releases with changelogs and migration notes.
+- Keep sample outputs reproducible by including seed, model, LoRA, size, and palette settings.
+- Avoid promising universal model support. State what is tested.
+- Add a contributing guide with formatting, test commands, and architecture notes.
+- Keep generated assets out of git unless they are curated examples.
+
+## Could this software be sold
+
+Yes, but the strongest product shape is a polished local creator tool, not just a script bundle. The value is the workflow: exact pixel sizes, transparent sprites, recipes, metadata, model management, and export paths for game engines.
+
+The main requirements before selling are:
+
+- A dependable installer and updater.
+- A clear license screen for the application and for user selected models.
+- A safe model download flow that does not bundle restricted model files by default.
+- Stronger quality gates for character consistency and animation direction drift.
+- Better recovery from failed downloads, out of memory errors, and incompatible LoRAs.
+- Clear documentation that separates supported, experimental, and planned features.
+- A support process for GPU setup issues.
+
+The most realistic first market is indie game developers who need quick placeholder to production pixel assets and can tolerate local setup. The product becomes easier to sell after it has a packaged desktop release, a curated model set, a gallery of successful outputs, and direct export presets for common engines.
+
+The biggest business risks are model license complexity, support load from GPU differences, quality variance from generative models, and competition from broader art tools. The biggest advantage is focus: a local pipeline built specifically for game ready pixel assets rather than general image generation.

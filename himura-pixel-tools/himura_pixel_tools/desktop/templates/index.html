@@ -1,0 +1,558 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Himura Pixel Tools</title>
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">â—†</span>
+      <h1>Himura Pixel Tools</h1>
+      <span id="version" class="muted"></span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="generate" class="active">Generate</button>
+      <button data-tab="objects">Objects</button>
+      <button data-tab="uiassets">UI</button>
+      <button data-tab="advancedtiles">Advanced Tiles</button>
+      <button data-tab="characters">Characters</button>
+      <button data-tab="animation">Animation</button>
+      <button data-tab="tileset">Tilesets</button>
+      <button data-tab="recipes">Recipes</button>
+      <button data-tab="snapper">Snapper</button>
+      <button data-tab="export">Export</button>
+      <button data-tab="models">Models</button>
+      <button data-tab="jobs">Jobs</button>
+      <button data-tab="settings">Settings</button>
+    </nav>
+    <div class="status">
+      <span id="device" class="chip">â€”</span>
+      <span id="loaded-model" class="chip">no model</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- GENERATE -->
+    <section data-panel="generate" class="panel active">
+      <div class="grid2">
+        <div class="card">
+          <h2>Generate asset</h2>
+          <label>Prompt<textarea id="g-prompt" rows="3">pixel art, small knight with blue cape, top-down RPG sprite, clean outline, limited palette</textarea></label>
+          <label>Negative prompt<input id="g-negative" value="blurry, smooth, antialiased, realistic, photographic, 3d render, low quality" /></label>
+          <div class="row">
+            <label>Asset type
+              <select id="g-type">
+                <option value="item">item</option>
+                <option value="prop">prop</option>
+                <option value="character" selected>character</option>
+                <option value="building">building</option>
+                <option value="ui_element">ui_element</option>
+                <option value="background_scene">background_scene</option>
+              </select>
+            </label>
+            <label>Size
+              <select id="g-size">
+                <option value="16x16">16Ã—16 tiny_icon</option>
+                <option value="24x24">24Ã—24 small_icon</option>
+                <option value="32x32">32Ã—32 rpg_item</option>
+                <option value="48x48">48Ã—48 rpg_character</option>
+                <option value="64x64" selected>64Ã—64 standard_character</option>
+                <option value="96x96">96Ã—96 large_character</option>
+                <option value="128x128">128Ã—128 portrait_or_ui</option>
+                <option value="custom">custom</option>
+              </select>
+            </label>
+          </div>
+          <div class="row custom-size hidden" id="g-custom">
+            <label>W<input id="g-w" type="number" value="64" /></label>
+            <label>H<input id="g-h" type="number" value="64" /></label>
+          </div>
+          <div class="row">
+            <label>Colors<input id="g-colors" type="number" value="24" /></label>
+            <label>Seed<input id="g-seed" type="number" value="-1" /></label>
+            <label>Style<select id="g-style"><option value="style_default_rpg_64">Default RPG 64</option></select></label>
+          </div>
+          <label class="check"><input id="g-transparent" type="checkbox" checked /> Transparent background</label>
+          <label class="check"><input id="g-fast" type="checkbox" /> Fast draft preset (fewer steps)</label>
+          <div class="row">
+            <label>Palette preset
+              <select id="g-palette">
+                <option value="">none (auto palette)</option>
+                <option value="gameboy">Game Boy (4)</option>
+                <option value="gameboy_pocket">Game Boy Pocket (4)</option>
+                <option value="pico8">PICO-8 (16)</option>
+                <option value="nes">NES (16)</option>
+                <option value="c64">Commodore 64 (16)</option>
+                <option value="cga">CGA (4)</option>
+                <option value="sweetie16">Sweetie-16 (16)</option>
+              </select>
+            </label>
+            <label>Dither
+              <select id="g-dither">
+                <option value="none">none</option>
+                <option value="bayer2">Bayer 2Ã—2</option>
+                <option value="bayer4">Bayer 4Ã—4</option>
+                <option value="bayer8">Bayer 8Ã—8</option>
+              </select>
+            </label>
+          </div>
+          <label class="check"><input id="g-protect" type="checkbox" /> Protect outline / highlight colors</label>
+          <div class="row">
+            <label>Style LoRA<select id="g-lora" class="lora-select"><option value="">(none / global default)</option></select></label>
+          </div>
+          <div class="row">
+            <label>Output folder<input id="g-output" placeholder="leave blank for default project folder" /></label>
+          </div>
+          <label class="check"><input id="g-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <button id="g-generate" class="primary">Generate</button>
+          <p id="g-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Result</h2>
+          <div id="g-preview" class="preview-area"><span class="muted">Generated images appear here.</span></div>
+          <div id="g-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- OBJECTS -->
+    <section data-panel="objects" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>Objects</h2>
+          <label>Description<input id="o-desc" value="wooden barrel with iron bands" /></label>
+          <div class="row"><label>Style LoRA<select id="o-lora" class="lora-select"><option value="">(none / global default)</option></select></label></div>
+          <div class="row">
+            <label>Size<input id="o-size" type="number" value="64" /></label>
+            <label>View<select id="o-view"><option value="top-down">top-down</option><option value="sidescroller">sidescroller</option><option value="low top-down">low top-down</option><option value="high top-down">high top-down</option><option value="side">side</option></select></label>
+            <label>Seed<input id="o-seed" type="number" value="-1" /></label>
+          </div>
+          <label class="check"><input id="o-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <div class="row">
+            <button id="o-create" class="primary">Create 1-direction object</button>
+            <button id="o-rot">Create 8-direction object</button>
+          </div>
+          <h3>State variant</h3>
+          <div class="row">
+            <label>Saved object<select id="o-state-pick"></select></label>
+            <label>Upload image<input id="o-state-upload" type="file" accept="image/png,image/jpeg,image/webp" /></label>
+          </div>
+          <div class="row">
+            <label>Edit<input id="o-state-edit" value="make it mossy and aged" /></label>
+          </div>
+          <button id="o-state">Create state</button>
+          <h3>Map object</h3>
+          <label>Description<input id="mo-desc" value="small stone fountain for RPG town map" /></label>
+          <div class="row">
+            <label>W<input id="mo-w" type="number" value="64" /></label>
+            <label>H<input id="mo-h" type="number" value="64" /></label>
+            <label>View<select id="mo-view"><option value="low top-down">low top-down</option><option value="high top-down">high top-down</option><option value="side">side</option></select></label>
+          </div>
+          <button id="mo-create">Create map object</button>
+          <p id="o-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Object preview</h2>
+          <div id="o-preview" class="preview-area sprite-grid"><span class="muted">Object outputs appear here.</span></div>
+          <div id="o-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UI ASSETS -->
+    <section data-panel="uiassets" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>UI asset</h2>
+          <label>Description<input id="u-desc" value="wooden RPG dialogue panel with brass trim" /></label>
+          <div class="row">
+            <label>Name<input id="u-name" value="Dialogue Panel" /></label>
+            <label>Palette<input id="u-palette" value="warm wood, brass, teal gems" /></label>
+          </div>
+          <div class="row">
+            <label>W<input id="u-w" type="number" value="256" /></label>
+            <label>H<input id="u-h" type="number" value="128" /></label>
+            <label>Elements<input id="u-elements" value="panel,button,tab" /></label>
+          </div>
+          <label class="check"><input id="u-bg" type="checkbox" checked /> Transparent background</label>
+          <div class="row"><label>Style LoRA<select id="u-lora" class="lora-select"><option value="">(none / global default)</option></select></label></div>
+          <label class="check"><input id="u-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <button id="u-create" class="primary">Create UI asset</button>
+          <p id="u-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>UI preview</h2>
+          <div id="u-preview" class="preview-area"><span class="muted">UI art appears here.</span></div>
+          <div id="u-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADVANCED TILES -->
+    <section data-panel="advancedtiles" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>PixelLab-style tiles</h2>
+          <h3>Top-down Wang</h3>
+          <div class="row">
+            <label>Lower<input id="td-lower" value="ocean water" /></label>
+            <label>Upper<input id="td-upper" value="sandy beach" /></label>
+            <label>Transition<input id="td-trans" value="wet sand and foam" /></label>
+          </div>
+          <button id="td-create" class="primary">Create top-down tileset</button>
+          <h3>Sidescroller</h3>
+          <div class="row">
+            <label>Base<input id="sd-lower" value="stone brick" /></label>
+            <label>Surface<input id="sd-trans" value="mossy grass" /></label>
+          </div>
+          <button id="sd-create">Create sidescroller tileset</button>
+          <h3>Isometric / pro tiles</h3>
+          <div class="row">
+            <label>Iso desc<input id="iso-desc" value="grass on top of dirt" /></label>
+            <label>Size<input id="adv-size" type="number" value="32" /></label>
+          </div>
+          <div class="row">
+            <button id="iso-create">Create isometric tile</button>
+            <button id="pro-create">Create pro tile sheet</button>
+          </div>
+          <div class="row"><label>Style LoRA<select id="adv-lora" class="lora-select"><option value="">(none / global default)</option></select></label></div>
+          <label class="check"><input id="adv-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <p id="adv-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Tile preview</h2>
+          <div id="adv-preview" class="preview-area"><span class="muted">Advanced tile outputs appear here.</span></div>
+          <div id="adv-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHARACTERS -->
+    <section data-panel="characters" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>Create character</h2>
+          <label>Name<input id="c-name" value="Blue Knight" /></label>
+          <label>Description<textarea id="c-desc" rows="2">small knight with blue cape, silver armor, holding a short sword, top-down RPG</textarea></label>
+          <div class="row">
+            <label>Size<select id="c-size"><option value="48x48">48Ã—48</option><option value="64x64" selected>64Ã—64</option><option value="96x96">96Ã—96</option></select></label>
+            <label>Directions<select id="c-dir"><option value="4">4</option><option value="8">8</option></select></label>
+            <label>Seed<input id="c-seed" type="number" value="-1" /></label>
+          </div>
+          <div class="row"><label>Style LoRA<select id="c-lora" class="lora-select"><option value="">(none / global default)</option></select></label></div>
+          <label class="check"><input id="c-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <button id="c-create" class="primary">Create character</button>
+          <p id="c-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Character preview</h2>
+          <div id="c-preview" class="preview-area"><span class="muted">The canonical reference appears here after creation.</span></div>
+          <div id="c-meta" class="muted small"></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h2>Characters</h2>
+          <ul id="c-list" class="list"></ul>
+          <div class="row">
+            <label>Character<select id="c-pick"></select></label>
+          </div>
+          <div class="row">
+            <label>Directions<select id="c-tdir"><option value="4">4</option><option value="8">8</option></select></label>
+          </div>
+          <button id="c-turnaround">Generate turnaround</button>
+          <p id="c-turn-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Turnaround</h2>
+          <div id="c-turn-grid" class="preview-area sprite-grid"><span class="muted">Directional frames appear here.</span></div>
+          <div id="c-turn-meta" class="muted small"></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h2>Portrait</h2>
+          <p class="muted small">Generate a face/bust portrait that matches a character's colors and design â€” for dialogue boxes and UI.</p>
+          <div class="row">
+            <label>Character<select id="p-pick"></select></label>
+            <label>Expression<select id="p-expr">
+              <option value="neutral">neutral</option>
+              <option value="smiling">smiling</option>
+              <option value="angry">angry</option>
+              <option value="sad">sad</option>
+              <option value="surprised">surprised</option>
+              <option value="determined">determined</option>
+            </select></label>
+          </div>
+          <div class="row">
+            <label>Size<select id="p-size">
+              <option value="96x96">96Ã—96</option>
+              <option value="128x128" selected>128Ã—128</option>
+              <option value="160x160">160Ã—160</option>
+            </select></label>
+            <label>Colors<input id="p-colors" type="number" value="32" /></label>
+            <label>Seed<input id="p-seed" type="number" value="-1" /></label>
+          </div>
+          <label class="check"><input id="p-transparent" type="checkbox" checked /> Transparent background</label>
+          <button id="p-generate" class="primary">Generate portrait</button>
+          <p id="p-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Portrait preview</h2>
+          <div id="p-preview" class="preview-area"><span class="muted">The portrait appears here.</span></div>
+          <div id="p-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANIMATION -->
+    <section data-panel="animation" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>Animate character</h2>
+          <div class="row">
+            <label>Character<select id="a-char"></select></label>
+            <label>Animation<select id="a-anim">
+              <option value="idle">idle</option><option value="walk">walk</option>
+              <option value="run">run</option><option value="attack">attack</option>
+              <option value="hurt">hurt</option><option value="death">death</option>
+              <option value="cast">cast</option>
+            </select></label>
+            <label>Directions<select id="a-dir"><option value="4">4</option><option value="8">8</option></select></label>
+          </div>
+          <div class="row"><label>Style LoRA<select id="a-lora" class="lora-select"><option value="">(none / global default)</option></select></label></div>
+          <label class="check"><input id="a-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <button id="a-generate" class="primary">Generate animation</button>
+          <p id="a-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Animation preview</h2>
+          <div id="a-preview" class="preview-area"><span class="muted">The animated GIF and sprite sheet appear here.</span></div>
+          <div id="a-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TILESET -->
+    <section data-panel="tileset" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>Create tileset</h2>
+          <label>Description<input id="t-desc" value="grass and dirt dungeon floor, top-down RPG" /></label>
+          <div class="row">
+            <label>Tile W<input id="t-w" type="number" value="16" /></label>
+            <label>Tile H<input id="t-h" type="number" value="16" /></label>
+            <label>Type<select id="t-type"><option value="top_down">top_down</option><option value="sidescroller">sidescroller</option><option value="isometric">isometric</option><option value="wang">wang</option></select></label>
+            <label>Count<input id="t-count" type="number" value="8" /></label>
+          </div>
+          <div class="row"><label>Style LoRA<select id="t-lora" class="lora-select"><option value="">(none / global default)</option></select></label></div>
+          <label class="check"><input id="t-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <button id="t-create" class="primary">Create tileset</button>
+          <p id="t-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Tileset preview</h2>
+          <div id="t-preview" class="preview-area"><span class="muted">The composed tileset sheet appears here.</span></div>
+          <div id="t-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECIPES -->
+    <section data-panel="recipes" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>Batch recipes</h2>
+          <div class="row">
+            <label>Recipe
+              <select id="r-recipe">
+                <option value="item_set">Item set</option>
+                <option value="ui_pack">UI pack</option>
+                <option value="tileset_pack">Tileset pack</option>
+                <option value="character_pack">Character pack</option>
+              </select>
+            </label>
+            <label>Theme<input id="r-theme" value="crystal forest RPG" /></label>
+          </div>
+          <div class="row">
+            <label>Count<input id="r-count" type="number" value="6" min="1" max="32" /></label>
+            <label>Size<input id="r-size" type="number" value="64" min="8" max="512" /></label>
+            <label>Seed<input id="r-seed" type="number" value="-1" /></label>
+          </div>
+          <div class="row">
+            <label>Directions<select id="r-dir"><option value="4">4</option><option value="8">8</option></select></label>
+            <label>Animations<input id="r-anims" value="idle,walk" /></label>
+          </div>
+          <div class="row"><label>Style LoRA<select id="r-lora" class="lora-select"><option value="">(none / global default)</option></select></label></div>
+          <label class="check"><input id="r-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <button id="r-run" class="primary">Run recipe</button>
+          <p id="r-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Recipe output</h2>
+          <div id="r-preview" class="preview-area sprite-grid"><span class="muted">Batch outputs appear here.</span></div>
+          <div id="r-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SNAPPER -->
+    <section data-panel="snapper" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>True-pixel snapper</h2>
+          <p class="muted small">Snap any image to a clean true-pixel grid â€” auto-detects the native pixel size (like spritefusion-pixel-snapper). Great for fixing fuzzy AI pixel art or importing reference art.</p>
+          <label>Image file<input id="sn-file" type="file" accept="image/png,image/jpeg,image/webp" /></label>
+          <div class="row">
+            <label>Pixel size<input id="sn-px" type="number" placeholder="auto-detect" /></label>
+            <label>Colors (0 = keep)<input id="sn-colors" type="number" value="0" /></label>
+          </div>
+          <button id="sn-run" class="primary">Snap to true pixels</button>
+          <p id="sn-status" class="muted"></p>
+        </div>
+        <div class="card preview-card">
+          <h2>Snapped result</h2>
+          <div id="sn-preview" class="preview-area"><span class="muted">The snapped sprite appears here.</span></div>
+          <div id="sn-meta" class="muted small"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPORT -->
+    <section data-panel="export" class="panel">
+      <div class="card">
+        <h2>Build engine pack</h2>
+        <p class="muted small">Bundle generated assets + engine metadata into a ZIP, ready to drop into your game project.</p>
+        <div class="row">
+          <label>Engine<select id="e-engine">
+            <option value="godot">Godot</option>
+            <option value="unity">Unity</option>
+            <option value="phaser">Phaser</option>
+            <option value="aseprite">Aseprite</option>
+            <option value="generic" selected>Generic</option>
+          </select></label>
+          <button id="e-refresh">Refresh assets</button>
+          <label class="check inline-check"><input id="e-save-final" type="checkbox" checked /> Save to final outputs</label>
+          <button id="e-build" class="primary">Build pack</button>
+        </div>
+        <p id="e-status" class="muted"></p>
+        <h3>Select assets to include</h3>
+        <p class="muted small">No assets yet? Generate something first, then refresh.</p>
+        <ul id="e-assets" class="list"></ul>
+        <div id="e-result" class="muted small"></div>
+      </div>
+    </section>
+
+    <!-- MODELS -->
+    <section data-panel="models" class="panel">
+      <div class="card">
+        <h2>Models</h2>
+        <p class="muted">Model store: <code id="m-root"></code></p>
+        <p class="muted small">Drop model folders or <code>.safetensors</code> files directly into the folder above (under <code>base/</code>, <code>lora/</code>, etc.) and they are detected automatically â€” or download from below.</p>
+        <p class="muted">VRAM report</p>
+        <pre id="m-vram" class="mono small"></pre>
+
+        <h3>Active base model</h3>
+        <div class="row">
+          <label>Base model used for generation
+            <select id="m-active-base"></select>
+          </label>
+          <button id="m-set-active" class="primary">Set active</button>
+          <button id="m-unload">Unload</button>
+        </div>
+        <p id="m-active-status" class="muted"></p>
+
+        <h3>Download a model individually</h3>
+        <div class="row">
+          <label>Hugging Face id or URL
+            <input id="m-install-id" placeholder="org/name  or  https://huggingface.co/org/name/resolve/main/file.safetensors" />
+          </label>
+          <label>Type (auto-detected if blank)
+            <select id="m-install-type">
+              <option value="">auto-detect</option>
+              <option value="base">base</option>
+              <option value="vae">vae</option>
+              <option value="lora">lora</option>
+              <option value="controlnet">controlnet</option>
+              <option value="ip_adapter">ip_adapter</option>
+              <option value="motion">motion</option>
+              <option value="segmentation">segmentation</option>
+              <option value="upscale">upscale</option>
+            </select>
+          </label>
+          <button id="m-install" class="primary">Download</button>
+        </div>
+        <p id="m-download-status" class="muted"></p>
+
+        <div class="row">
+          <button id="m-download-all">Download recommended set</button>
+          <button id="m-download-ideogram">Download Ideogram 4 GGUF</button>
+          <button id="m-refresh">Refresh</button>
+        </div>
+
+        <h3>Installed models</h3>
+        <ul id="m-installed" class="list"></ul>
+
+        <h3>Recommended models (click to download each)</h3>
+        <ul id="m-recommended" class="list"></ul>
+      </div>
+    </section>
+
+    <!-- JOBS -->
+    <section data-panel="jobs" class="panel">
+      <div class="card">
+        <h2>Jobs</h2>
+        <div class="row jobs-actions">
+          <button id="j-refresh">Refresh</button>
+          <button id="j-exclude-all" class="danger">Exclude all generated outputs</button>
+        </div>
+        <table id="j-table" class="jobs-table">
+          <thead><tr><th>ID</th><th>Type</th><th>Status</th><th>Progress</th><th>Output</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section data-panel="settings" class="panel">
+      <div class="card">
+        <h2>Settings</h2>
+        <div id="s-fields"></div>
+        <h3>MCP token</h3>
+        <div class="row">
+          <input id="s-token" readonly class="mono" />
+          <button id="s-copy-token">Copy</button>
+        </div>
+        <p class="muted small">MCP HTTP URL: <code id="s-mcp-url"></code></p>
+
+        <h3>Connect an AI CLI</h3>
+        <p class="muted small">Pick your agent, then copy the ready-to-paste setup
+          (token and URL filled in for you). Keep the app running while the agent uses the tools.</p>
+        <div class="row">
+          <label>AI CLI / app
+            <select id="s-cli">
+              <option value="claude_http">Claude Code (HTTP â€” recommended)</option>
+              <option value="claude_stdio">Claude Code (stdio)</option>
+              <option value="claude_desktop">Claude Desktop (config JSON)</option>
+              <option value="codex_http">OpenAI Codex (HTTP, config.toml)</option>
+              <option value="codex_stdio">OpenAI Codex (stdio, config.toml)</option>
+              <option value="antigravity">Google Antigravity (mcp.json)</option>
+              <option value="cursor">Cursor (mcp.json)</option>
+            </select>
+          </label>
+          <button id="s-copy-cli">Copy setup</button>
+        </div>
+        <textarea id="s-cli-config" class="mono" rows="9" readonly></textarea>
+      </div>
+    </section>
+  </main>
+
+  <footer class="muted small">by <a href="https://himuracreativestudio.pt" target="_blank" rel="noopener">Himura Creative Studio</a> &amp; Andr&eacute; Pires</footer>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
+

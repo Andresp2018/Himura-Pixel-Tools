@@ -1,0 +1,36 @@
+Himura Pixel Tools - License
+
+Copyright (c) 2026 Himura Pixel Tools. All rights reserved.
+
+This repository is source-available software provided for reference, personal
+use, and evaluation. It is NOT open source.
+
+1. Permitted use
+   You may view, download, run, and modify this software for your own personal,
+   non-commercial use and evaluation.
+
+2. Restrictions
+   Without prior written permission from the copyright holder, you may NOT:
+   - use the software or any part of its source code for commercial purposes;
+   - sell, rent, sublicense, or offer it or a derivative as a paid product or a
+     hosted service;
+   - redistribute the software or substantial portions of it, modified or
+     unmodified, to third parties;
+   - remove or alter this license or the copyright notices.
+
+3. Third-party models and dependencies
+   This software downloads and uses third-party AI models, libraries, and
+   assets, each governed by its own license. You are responsible for complying
+   with those licenses, for example FLUX, SDXL, Ideogram, and any LoRA or
+   ControlNet you choose to install. No model weights are distributed with this
+   repository.
+
+4. No warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY,
+   WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR
+   IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+For commercial licensing or other permissions, contact the copyright holder.

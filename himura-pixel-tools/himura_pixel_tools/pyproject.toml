@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "himura-pixel-tools"
+version = "1.0.0"
+description = "Self-contained local pixel-art game asset generator with character consistency, animation, true-pixel export, and local MCP."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Himura Pixel Tools" }]
+
+[project.scripts]
+himura-pixel-tools-api      = "himura_pixel_tools.api.server:main"
+himura-pixel-tools-mcp      = "himura_pixel_tools.mcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["himura_pixel_tools*"]
+
+[tool.setuptools.package-data]
+"himura_pixel_tools.desktop" = ["templates/*.html", "static/**/*"]

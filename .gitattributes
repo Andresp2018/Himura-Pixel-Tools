@@ -1,0 +1,19 @@
+# Normalize line endings: store text as LF in the repository.
+* text=auto eol=lf
+
+# Windows scripts must keep CRLF so they run correctly on Windows.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Unix shell scripts must stay LF.
+*.sh text eol=lf
+
+# Binary files: no diffing, no EOL conversion.
+*.exe binary
+*.png binary
+*.ico binary
+*.gguf binary
+*.safetensors binary
+*.webp binary
+*.gif binary

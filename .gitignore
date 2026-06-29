@@ -1,0 +1,31 @@
+# Rust / Tauri build artifacts
+tauri-launcher/src-tauri/target/
+**/target/
+**/*.rs.bk
+# Tauri auto-generated schemas (regenerated on build)
+tauri-launcher/src-tauri/gen/
+
+# Python
+**/__pycache__/
+*.pyc
+*.pyo
+**/.venv/
+*.egg-info/
+build/
+
+# App data, models, outputs, cache (never commit)
+**/himura_data/
+**/models/
+**/cache/
+**/logs/
+*.db
+**/mcp_token
+
+# Bundled Python runtime (large, ship via release instead)
+python312-runtime/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

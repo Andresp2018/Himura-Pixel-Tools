@@ -1,0 +1,20 @@
+[package]
+name = "himura-pixel-tools"
+version = "1.0.0"
+description = "Himura Pixel Tools desktop launcher"
+authors = ["Himura Pixel Tools"]
+edition = "2021"
+rust-version = "1.77"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

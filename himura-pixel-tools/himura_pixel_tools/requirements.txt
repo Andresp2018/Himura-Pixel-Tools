@@ -1,0 +1,46 @@
+﻿# â”€â”€ Himura Pixel Tools â€” Python runtime dependencies â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# Pinned loosely; all run inside the project venv created by setup scripts.
+
+# Web / API layer
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+python-multipart>=0.0.9
+sse-starlette>=2.0.0
+
+# Model / inference layer (Diffusers/PyTorch as a *library*, no ComfyUI)
+# torch/torchvision are installed by SETUP.BAT/setup_windows.ps1 for CUDA,
+# DirectML, or CPU. Keeping them out of requirements.txt prevents pip
+# from silently replacing the selected backend build.
+diffusers>=0.30.0
+transformers>=4.46.0,<5.0.0
+accelerate>=0.30.0
+safetensors>=0.4.0
+peft>=0.11.0
+sentencepiece>=0.2.0
+huggingface_hub>=0.24.0,<1.0.0
+
+# Image / pixel processing
+pillow>=10.0.0
+numpy>=1.26.0
+opencv-python>=4.8.0
+scikit-image>=0.22.0
+scipy>=1.10.0
+einops>=0.7.0
+kornia>=0.7.0
+timm>=0.9.0
+
+# Model download / optional quantization
+bitsandbytes>=0.43.0
+# GGUF reader — required by diffusers to load .gguf transformers (FLUX GGUF)
+gguf>=0.10.0
+
+# MCP server
+mcp>=1.2.0
+httpx>=0.27.0
+
+# Database
+sqlmodel>=0.0.16
+
+
+
